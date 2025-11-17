@@ -2,6 +2,8 @@
 
 Ứng dụng quản lý công việc hiện đại kết hợp **giao diện Kanban kiểu Trello** và **trí tuệ nhân tạo Gemini** để tự động tạo task từ mô tả.
 
+Demo:  https://ai-task-manager-bay.vercel.app/
+
 <img width="1867" height="923" alt="image" src="https://github.com/user-attachments/assets/2b450374-159a-4848-b3a1-cc3b243f7af9" />
 
 
