@@ -12,15 +12,16 @@ app.use(express.json());
 
 app.use("/api/tasks", tasksRouter);
 
-const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 4000; // ✔ Lấy PORT của Render
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("🌿 Connected to MongoDB Atlas");
     app.listen(PORT, () => {
-      console.log(`🚀 Backend running on http://localhost:${PORT}`);
+      console.log(`🚀 Backend running on port ${PORT}`);
     });
   })
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+  .catch((err) => {
+    console.error("❌ MongoDB Error:", err);
+  });
