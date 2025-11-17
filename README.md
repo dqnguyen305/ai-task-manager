@@ -1,63 +1,45 @@
-AI TASK MANAGER — Trello Board + Gemini AI
+# 🚀 AI Task Manager
 
-Quản lý công việc thông minh, tự sinh task bằng AI, kéo–thả như Trello.
+Ứng dụng quản lý công việc hiện đại kết hợp **giao diện Kanban kiểu Trello** và **trí tuệ nhân tạo Gemini** để tự động tạo task từ mô tả.
 
-<img width="1889" height="913" alt="image" src="https://github.com/user-attachments/assets/2d315dd0-067c-48a2-9a12-7948f75c00e2" />
-
-
-🚀 1. Giới thiệu
-
-AI Task Manager là ứng dụng quản lý công việc hiện đại, gồm:
-
-Board 3 cột kiểu Trello (To-do / In Progress / Done)
-
-Kéo–thả (Drag & Drop) để đổi trạng thái task
-
-Sinh task bằng AI (Gemini 2.0 Flash)
-
-Thêm / Sửa / Xoá task đầy đủ fields
-
-MongoDB Atlas lưu trữ dữ liệu
-
-UI đẹp Dark Mode + Tailwind CDN
-
-Backend + Frontend tách biệt hoàn toàn
-
-Ứng dụng rất phù hợp cho:
-
-Học sinh / sinh viên quản lý công việc
-
-Dev quản lý task
-
-Tạo task tự động cho project
+<img width="1867" height="923" alt="image" src="https://github.com/user-attachments/assets/2b450374-159a-4848-b3a1-cc3b243f7af9" />
 
 
-🧱 2. Công nghệ sử dụng
-🔧 Backend
+---
 
-Node.js + Express
+## ✨ Tính năng nổi bật
 
-MongoDB Atlas
+* **Bảng Kanban 3 cột** (To-do → In Progress → Done)
+* **Kéo – Thả** mượt mà bằng `@hello-pangea/dnd`
+* **Sinh task tự động bằng AI (Gemini 2.0 Flash)**
+* **Đầy đủ CRUD**: tạo – sửa – xoá
+* **Giao diện Dark Mode** với Tailwind CSS
+* **Lưu trữ trên MongoDB Atlas**
+* **Frontend & Backend tách biệt chuyên nghiệp (MERN style)**
 
-Mongoose ORM
+---
 
-Gemini 2.0 Flash API
+## 🛠 Công nghệ sử dụng
 
-dotenv, axios
+### Backend
 
-nodemon
+* Node.js + Express
+* MongoDB Atlas + Mongoose
+* Google Gemini API
+* Axios
 
-🎨 Frontend
+### Frontend
 
-React + Vite
+* React 18 + Vite
+* Tailwind CSS
+* Axios
+* @hello-pangea/dnd
 
-Tailwind CSS CDN
+---
 
-Axios
+## 📂 Cấu trúc dự án
 
-@hello-pangea/dnd (drag & drop)
-
-📁 3. Cấu trúc dự án
+```
 ai-task-manager/
 │
 ├── backend/
@@ -87,162 +69,117 @@ ai-task-manager/
         │   ├── TaskCard.jsx
         │   ├── TaskForm.jsx
         │   └── TaskEditModal.jsx
+```
 
-🔐 4. Cấu hình môi trường (.env)
+---
 
-📌 File: backend/.env
+## 🔐 Biến môi trường (.env)
 
+File: `backend/.env`
+
+```
 PORT=4000
 MONGO_URI=your-mongo-atlas-uri
 GEMINI_KEY=your-google-api-key
+```
 
+---
 
-MongoDB database: ai_task_manager
-Collection: tasks
+## ⚙️ Cài đặt Backend
 
-🧩 5. Chức năng hệ thống
-✔ Tạo task thủ công
-
-Tạo đầy đủ:
-
-title
-
-description
-
-summary
-
-estimated_time
-
-status
-
-✔ Tạo task bằng AI
-
-Nhập mô tả → AI tự sinh:
-
-Title chuyên nghiệp
-
-Summary súc tích
-
-Time estimate (1–12h)
-
-Lưu trực tiếp vào DB
-
-✔ Kéo — Thả (Drag & Drop)
-
-Giống Trello, thay đổi status bằng kéo task giữa 3 cột.
-
-✔ Edit task (đầy đủ fields)
-
-Edit title
-
-Edit description
-
-Edit summary
-
-Edit estimated_time
-
-Edit status (dropdown)
-
-✔ Delete task
-
-Xoá và cập nhật ngay UI.
-
-✔ Seed dữ liệu mẫu
-
-npm run seed → nạp 3 task mẫu vào DB.
-
-⚙️ 6. Cài đặt Backend
+```bash
 cd backend
 npm install
 npm run dev
+```
 
+Khởi tạo dữ liệu mẫu:
 
-Nếu OK:
-
-🌿 Connected to MongoDB Atlas
-🚀 Backend running on http://localhost:4000
-
-Seed dữ liệu mẫu
+```bash
 npm run seed
+```
 
-🎨 7. Cài đặt Frontend
+---
+
+## 🎨 Cài đặt Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
+Truy cập dự án:
 
-Truy cập:
+```
+http://localhost:5173
+```
 
-👉 http://localhost:5173
+---
 
-🤖 8. Nâng cấp AI (Gemini 2.0 Flash)
+## 🤖 Cấu hình AI (Gemini 2.0 Flash)
 
-AI được tối ưu để:
+File chính:
 
-Tạo title chuyên nghiệp
-
-Tạo summary ngắn gọn
-
-Ước tính thời gian hợp lý (1–12h)
-
-Tự động sửa lỗi grammar
-
-Trả về JSON chuẩn (không markdown)
-
-Không lỗi JSON Parse
-
-📌 File cấu hình AI:
+```
 backend/src/ai/aiService.js
+```
 
-🖼 9. Giao diện
-🟩 Form Create Task
+AI sẽ tự động tạo:
 
-Title
+* Tiêu đề chuyên nghiệp
+* Summary ngắn gọn
+* Estimate thời gian (1–12 giờ)
+* Trả về JSON sạch (không markdown)
 
-Description
+---
 
-Summary
+## 📡 API Endpoints
 
-Estimated time
+### Lấy danh sách task
 
-Status (dropdown)
+`GET /api/tasks`
 
-Nút “Generate with AI ✨”
+### Tạo task
 
-🟦 Board kiểu Trello
+`POST /api/tasks`
 
-Các task hiển thị gọn gàng
-
-Kéo thả đổi cột
-
-Hover đẹp
-
-Edit/Delete trực quan
-
-🧪 10. Gọi API mẫu (Postman)
-Lấy danh sách task
-GET /api/tasks
-
-Thêm task
-POST /api/tasks
-Content-Type: application/json
-
+```json
 {
-  "title": "Build login page",
-  "description": "Create UI + validation",
-  "summary": "Short version",
+  "title": "Xây dựng trang đăng nhập",
+  "description": "Tạo UI + xác thực",
+  "summary": "Phiên bản rút gọn",
   "estimated_time": 3,
   "status": "To-do"
 }
+```
 
-Sửa task
-PUT /api/tasks/:id
+### Sửa task
 
-Xoá task
-DELETE /api/tasks/:id
+`PUT /api/tasks/:id`
 
-Generate AI
-POST /api/tasks/ai/generate
+### Xoá task
+
+`DELETE /api/tasks/:id`
+
+### Sinh task bằng AI
+
+`POST /api/tasks/ai/generate`
+
+```json
 {
-  "description": "Build login page with validation"
+  "description": "Tạo trang đăng nhập với validation"
 }
+```
+
+---
+
+## 📌 Giấy phép
+
+MIT License – bạn có thể sử dụng và chỉnh sửa tự do.
+
+---
+
+## ⭐ Hỗ trợ dự án
+
+Nếu dự án hữu ích, hãy **để lại một ngôi sao trên GitHub!**
