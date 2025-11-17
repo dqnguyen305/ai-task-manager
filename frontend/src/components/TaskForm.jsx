@@ -28,20 +28,20 @@ export default function TaskForm({ onCreate, onAI }) {
         </div>
       </div>
 
+      {/* Create Task Popup */}
       <TaskCreateModal
         isOpen={openCreate}
         onClose={() => setOpenCreate(false)}
         onCreate={onCreate}
       />
 
+      {/* AI Popup */}
       <AIGenerateModal
         isOpen={openAI}
         onClose={() => setOpenAI(false)}
-        onGenerate={async (text) => {
-          const ai = await onAI(text);
+        onGenerate={async (txt) => {
+          await onAI(txt); // ✔ tạo task luôn
           setOpenAI(false);
-          setOpenCreate(true); // mở popup Create Task
-          return ai;
         }}
       />
     </>
