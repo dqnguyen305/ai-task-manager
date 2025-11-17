@@ -1,36 +1,46 @@
-import { useState } from "react";
+export default function AIGenerateModal({ onClose, onGenerate }) {
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
-export default function AIGenerateModal({ isOpen, onClose, onGenerate }) {
-  const [input, setInput] = useState("");
+  async function handleGenerate() {
+    if (!description.trim()) return;
+    setLoading(true);
 
-  if (!isOpen) return null;
+    const result = await onGenerate(description);
+
+    setLoading(false);
+    onClose(result); // trả summary + estimated_time về App.jsx
+  }
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-      <div className="bg-gray-800 p-6 rounded-xl w-[420px] border border-gray-700 shadow-xl">
-        <h2 className="text-2xl font-bold mb-3 text-white">Generate Task with AI ✨</h2>
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+      <div className="bg-[#1e2530] p-6 rounded-xl w-[450px] shadow-xl border border-gray-700">
+        <h2 className="text-xl font-bold mb-3">
+          Generate Task with AI ✨
+        </h2>
 
         <textarea
-          className="w-full p-2 rounded bg-gray-900 border border-gray-700 mb-3 text-white"
+          className="w-full p-3 rounded bg-[#0f172a] border border-gray-600"
+          rows="4"
           placeholder="Nhập mô tả để AI phân tích..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end mt-4 gap-3">
           <button
-            onClick={onClose}
+            onClick={() => onClose(null)}
             className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
           >
             Cancel
           </button>
 
           <button
-            onClick={() => onGenerate(input)}
+            onClick={handleGenerate}
+            disabled={loading}
             className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-500"
           >
-            Generate
+            {loading ? "Generating..." : "Generate"}
           </button>
         </div>
       </div>
