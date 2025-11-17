@@ -2,6 +2,9 @@ AI TASK MANAGER — Trello Board + Gemini AI
 
 Quản lý công việc thông minh, tự sinh task bằng AI, kéo–thả như Trello.
 
+<img width="1889" height="913" alt="image" src="https://github.com/user-attachments/assets/2d315dd0-067c-48a2-9a12-7948f75c00e2" />
+
+
 🚀 1. Giới thiệu
 
 AI Task Manager là ứng dụng quản lý công việc hiện đại, gồm:
