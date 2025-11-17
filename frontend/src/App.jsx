@@ -1,129 +1,137 @@
-import { useEffect, useState } from "react";
-import {
-  getTasks,
-  createTask,
-  deleteTask,
-  updateTask,
-  generateAI,
-} from "./services/api";
+import { useState, useEffect } from "react";
+import { getTasks, createTask, updateTask, deleteTask, generateAI } from "./services/api";
+import AIGenerateModal from "./components/AIGenerateModal";
 
-import TaskCard from "./components/TaskCard";
-import TaskForm from "./components/TaskForm";
-import TaskEditModal from "./components/TaskEditModal";
-
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-} from "@hello-pangea/dnd";
-
-export default function App() {
+function App() {
   const [tasks, setTasks] = useState([]);
-  const [editingTask, setEditingTask] = useState(null);
+  const [showAIPopup, setShowAIPopup] = useState(false);
 
-  const fetchData = async () => {
-    const res = await getTasks();
-    setTasks(res.data);
-  };
+  // Form fields
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [summary, setSummary] = useState("");
+  const [estimatedTime, setEstimatedTime] = useState("");
+  const [status, setStatus] = useState("To-do");
 
   useEffect(() => {
-    fetchData();
+    loadTasks();
   }, []);
 
-  // Create task
-  const handleCreate = async (data) => {
-    await createTask(data);
-    fetchData();
-  };
+  async function loadTasks() {
+    const res = await getTasks();
+    setTasks(res.data);
+  }
 
-  // Delete task
-  const handleDelete = async (id) => {
-    await deleteTask(id);
-    fetchData();
-  };
+  async function handleCreateTask() {
+    if (!title.trim()) return alert("Title is required");
 
-  // AI returns data for form (NOT creating task)
-  const handleAI = async (description) => {
-    const res = await generateAI(description);
-    return res.data;   // trả về cho modal Create Task
-  };
+    await createTask({
+      title,
+      description,
+      summary,
+      estimated_time: estimatedTime ? Number(estimatedTime) : null,
+      status,
+    });
 
+    // Reset
+    setTitle("");
+    setDescription("");
+    setSummary("");
+    setEstimatedTime("");
+    setStatus("To-do");
 
-  // Open edit popup
-  const handleEdit = (task) => {
-    setEditingTask(task);
-  };
+    loadTasks();
+  }
 
-  const handleSaveEdit = async (id, data) => {
-    await updateTask(id, data);
-    setEditingTask(null);
-    fetchData();
-  };
+  // 🟦 Gọi AI khi popup bấm Generate
+  async function handleAIGenerate(desc) {
+    const res = await generateAI(desc);
+    return res.data; // summary + estimated_time
+  }
 
-  // Drag & drop change status
-  const onDragEnd = async (result) => {
-    if (!result.destination) return;
-    const taskId = result.draggableId;
-    const newStatus = result.destination.droppableId;
-    await updateTask(taskId, { status: newStatus });
-    fetchData();
-  };
+  // 🟩 Khi popup đóng và trả dữ liệu AI về
+  function handleAIClose(result) {
+    setShowAIPopup(false);
 
-  const columns = {
-    "To-do": { title: "To-do", tasks: tasks.filter(t => t.status === "To-do") },
-    "In Progress": { title: "In Progress", tasks: tasks.filter(t => t.status === "In Progress") },
-    "Done": { title: "Done", tasks: tasks.filter(t => t.status === "Done") },
-  };
+    if (result) {
+      setSummary(result.summary);
+      setEstimatedTime(result.estimated_time);
+    }
+  }
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">AI Task Manager 🧠✨</h1>
+    <>
+      {/* --- FORM CREATE TASK --- */}
+      <div className="p-6 bg-[#0f1623] text-white">
+        <h2 className="text-2xl mb-4">Create Task</h2>
 
-      <TaskForm onCreate={handleCreate} onAI={handleAI} />
+        <input
+          className="w-full p-3 mb-3 rounded bg-[#1d2635]"
+          placeholder="Task title..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-3 gap-6 mt-6">
-          {Object.keys(columns).map((colId) => {
-            const col = columns[colId];
-            return (
-              <Droppable droppableId={colId} key={colId}>
-                {(provided) => (
-                  <div
-                    className="bg-gray-800 p-4 rounded-xl border border-gray-700 min-h-[500px]"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    <h2 className="text-xl mb-3 font-semibold text-primary">{col.title}</h2>
+        <textarea
+          className="w-full p-3 mb-3 rounded bg-[#1d2635]"
+          placeholder="Description..."
+          rows="2"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
 
-                    {col.tasks.map((task, index) => (
-                      <Draggable key={task._id} draggableId={task._id} index={index}>
-                        {(provided) => (
-                          <div
-                            className="mb-3"
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <TaskCard task={task} onDelete={handleDelete} onEdit={handleEdit} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+        <textarea
+          className="w-full p-3 mb-3 rounded bg-[#1d2635]"
+          placeholder="Summary..."
+          rows="2"
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+        />
 
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            );
-          })}
+        <input
+          type="number"
+          className="w-full p-3 mb-3 rounded bg-[#1d2635]"
+          placeholder="Estimated time (hours)..."
+          value={estimatedTime}
+          onChange={(e) => setEstimatedTime(e.target.value)}
+        />
+
+        <select
+          className="w-full p-3 mb-3 rounded bg-[#1d2635]"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          <option>To-do</option>
+          <option>In Progress</option>
+          <option>Done</option>
+        </select>
+
+        <div className="flex gap-4">
+          <button
+            onClick={handleCreateTask}
+            className="px-4 py-2 rounded bg-green-600 hover:bg-green-500"
+          >
+            Create Task
+          </button>
+
+          <button
+            onClick={() => setShowAIPopup(true)}
+            className="px-4 py-2 rounded bg-blue-700 hover:bg-blue-600"
+          >
+            Generate with AI (Popup)
+          </button>
         </div>
-      </DragDropContext>
+      </div>
 
-      <TaskEditModal
-        task={editingTask}
-        onClose={() => setEditingTask(null)}
-        onSave={handleSaveEdit}
-      />
-    </div>
+      {/* --- POPUP AI --- */}
+      {showAIPopup && (
+        <AIGenerateModal
+          onClose={handleAIClose}
+          onGenerate={handleAIGenerate}
+        />
+      )}
+    </>
   );
 }
+
+export default App;
