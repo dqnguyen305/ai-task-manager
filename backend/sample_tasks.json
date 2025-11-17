@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Build login form",
+    "description": "Create login form with email & password validation",
+    "summary": "Build login form with validation",
+    "estimated_time": 4,
+    "status": "To-do"
+  },
+  {
+    "title": "Setup landing page",
+    "description": "Design and setup landing page for marketing site",
+    "summary": "Setup marketing landing page",
+    "estimated_time": 6,
+    "status": "In Progress"
+  },
+  {
+    "title": "Fix logout bug",
+    "description": "Logout session not cleared correctly",
+    "summary": "Fix session logout issue",
+    "estimated_time": 2,
+    "status": "Done"
+  }
+]
